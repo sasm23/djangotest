@@ -6,10 +6,12 @@ from .models import Product
 class ProductSerializer(serializers.ModelSerializer):
     my_discount= serializers.SerializerMethodField(read_only=True)
     url= serializers.SerializerMethodField(read_only=True)
+    email = serializers.EmailField(write_only = True)
     class Meta:
         model = Product
         fields= [
             'url',
+            'email',
             'pk',
             'title',
             'content',
@@ -17,12 +19,20 @@ class ProductSerializer(serializers.ModelSerializer):
             'sale_price',
             'my_discount'
         ]
+
+    def create(self, validated_data):
+        email = validated_data.pop('email')
+        obj = super().create(validated_data)
+        print(email, obj)
+        return obj
+        
+    
     def get_url(self, obj):
         # return f"/api/products/{obj.pk}/"
         request = self.context.get('request')
         if request is None:
             return None
-        return reverse("detail_view", kwargs={"pk": obj.pk}, request=request)
+        return reverse("update_view", kwargs={"pk": obj.pk}, request=request)
     def get_my_discount(self, obj):
         if not hasattr(obj, 'id'):
             return None

@@ -9,7 +9,7 @@ urlpatterns = [
     path('get/',views.product_list_view, name='products-list'),
     #path('get/',views.product_mixin_view),
     #path('<int:pk>/update/',views.product_update_view),
-    path('<int:pk>/update/',views.product_mixin_view),
+    path('<int:pk>/update/',views.product_mixin_view, name= 'update_view'),
     #path('<int:pk>/delete/',views.product_delete_view),
     path('<int:pk>/delete/',views.product_mixin_view),
     path('<int:pk>/',views.product_detail_view, name='detail_view')

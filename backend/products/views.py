@@ -12,6 +12,8 @@ class ProductCreateAPIView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         title = serializer.validated_data.get('title')
+        email = serializer.validated_data.get('email')
+        print(email)
         content = serializer.validated_data.get('content') or None
         if content == None:
             content = title
