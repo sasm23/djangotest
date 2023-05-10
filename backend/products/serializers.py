@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.reverse import reverse
 
 from .models import Product
+from . import validators
 
 class ProductSerializer(serializers.ModelSerializer):
     my_discount= serializers.SerializerMethodField(read_only=True)
@@ -19,7 +20,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'sale_price',
             'my_discount'
         ]
-
+    title = serializers.CharField(validators=[validators.validate_title_nohello, validators.unique_product_title])
     def create(self, validated_data):
         email = validated_data.pop('email')
         obj = super().create(validated_data)
