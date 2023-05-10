@@ -8,6 +8,7 @@ class ProductSerializer(serializers.ModelSerializer):
     my_discount= serializers.SerializerMethodField(read_only=True)
     url= serializers.SerializerMethodField(read_only=True)
     email = serializers.EmailField(write_only = True)
+    name = serializers.CharField(source= 'title', read_only= True)
     class Meta:
         model = Product
         fields= [
@@ -15,6 +16,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'email',
             'pk',
             'title',
+            'name',
             'content',
             'price',
             'sale_price',
