@@ -3,8 +3,11 @@ from rest_framework.reverse import reverse
 
 from .models import Product
 from . import validators
+from api.serializers import UserPublicSerializers
 
 class ProductSerializer(serializers.ModelSerializer):
+    owner = UserPublicSerializers(source= 'user',read_only = True)
+    #id = UserPublicSerializers(read_only= True)
     my_discount= serializers.SerializerMethodField(read_only=True)
     url= serializers.SerializerMethodField(read_only=True)
     email = serializers.EmailField(write_only = True)
@@ -12,7 +15,8 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields= [
-            #'user',
+            'owner',
+            #'id',
             'url',
             'email',
             'pk',
