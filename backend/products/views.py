@@ -17,7 +17,7 @@ class ProductCreateAPIView(generics.CreateAPIView):
         content = serializer.validated_data.get('content') or None
         if content == None:
             content = title
-        serializer.save(content=content)
+        serializer.save(user=self.request.user, content=content)
 
 
 product_create_view = ProductCreateAPIView.as_view()
@@ -34,6 +34,11 @@ class ProductListAPIView(
     generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        request = self.request
+        #print(request.user)
+        return qs.filter(user=request.user)
     # authentication_classes = [authentication.SessionAuthentication,
     #                           TokenAuthentication
     #                           ]
